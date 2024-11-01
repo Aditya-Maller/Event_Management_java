@@ -1,0 +1,4 @@
+Event Type: Anniversary
+Name: a and b
+Date: 2024-11-01
+Celebration Type: wedding

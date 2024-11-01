@@ -1,0 +1,3 @@
+Event Type: Festival
+Name: Diwali
+Date: 2024-11-01

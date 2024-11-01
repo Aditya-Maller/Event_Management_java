@@ -1,0 +1,4 @@
+Event Type: GeneralEvent
+Name: my first job
+Date: 2024-11-01
+Event Type: remembering
