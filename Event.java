@@ -1,3 +1,5 @@
+// Location: Desktop/projects/Event_Tracker/src/Event.java
+
 import java.time.LocalDate;
 
 public abstract class Event {
@@ -8,7 +10,7 @@ public abstract class Event {
         this.name = name;
         this.date = date;
     }
-
+    
     public String getName() {
         return name;
     }
@@ -17,6 +19,6 @@ public abstract class Event {
         return date;
     }
 
-    public abstract boolean isToday();
+    // Abstract method to get reminder message
     public abstract String getReminderMessage();
 }

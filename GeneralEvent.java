@@ -1,3 +1,5 @@
+// Location: Desktop/projects/Event_Tracker/src/GeneralEvent.java
+
 import java.time.LocalDate;
 
 public class GeneralEvent extends Event {
@@ -14,11 +16,6 @@ public class GeneralEvent extends Event {
 
     @Override
     public String getReminderMessage() {
-        return "Remember the " + eventType + " event for " + getName() + " today.";
-    }
-
-    @Override
-    public boolean isToday() {
-        return LocalDate.now().isEqual(getDate());
+        return "Remember the " + eventType + " for " + getName() + " on " + getDate() + ".";
     }
 }

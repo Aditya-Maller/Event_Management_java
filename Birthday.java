@@ -1,3 +1,5 @@
+// Location: Desktop/projects/Event_Tracker/src/Birthday.java
+
 import java.time.LocalDate;
 
 public class Birthday extends Event {
@@ -14,12 +16,6 @@ public class Birthday extends Event {
 
     @Override
     public String getReminderMessage() {
-        return "Don't forget " + getName() + "'s birthday today! They will be " + age + " years old.";
-    }
-
-    @Override
-    public boolean isToday() {
-        LocalDate today = LocalDate.now();
-        return today.getMonth() == getDate().getMonth() && today.getDayOfMonth() == getDate().getDayOfMonth();
+        return "Don't forget " + getName() + "'s birthday on " + getDate() + "! They will be " + age + " years old.";
     }
 }

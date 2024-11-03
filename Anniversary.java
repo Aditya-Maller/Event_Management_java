@@ -1,3 +1,5 @@
+// Location: Desktop/projects/Event_Tracker/src/Anniversary.java
+
 import java.time.LocalDate;
 
 public class Anniversary extends Event {
@@ -14,12 +16,6 @@ public class Anniversary extends Event {
 
     @Override
     public String getReminderMessage() {
-        return "Celebrate " + getName() + "'s " + celebrationType + " anniversary today!";
-    }
-
-    @Override
-    public boolean isToday() {
-        LocalDate today = LocalDate.now();
-        return today.getMonth() == getDate().getMonth() && today.getDayOfMonth() == getDate().getDayOfMonth();
+        return "Celebrate " + getName() + "'s " + celebrationType + " anniversary on " + getDate() + "!";
     }
 }
