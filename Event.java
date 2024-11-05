@@ -1,24 +1,16 @@
-// Location: Desktop/projects/Event_Tracker/src/Event.java
-
 import java.time.LocalDate;
 
-public abstract class Event {
-    private String name;
+public abstract class Event {  // Abstraction: base class defining common event properties
+    private String name; //-->encapsulation
     private LocalDate date;
 
-    public Event(String name, LocalDate date) {
-        this.name = name;
-        this.date = date;
-    }
-    
-    public String getName() {
-        return name;
+    public Event(String name,LocalDate date) {
+        this.name=name;
+        this.date=date;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
+    public String getName() { return name; }
+    public LocalDate getDate() { return date; }
 
-    // Abstract method to get reminder message
-    public abstract String getReminderMessage();
+    public abstract String getReminderMessage();  // Polymorphism: method to be overridden
 }

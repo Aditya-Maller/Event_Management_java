@@ -1,21 +1,17 @@
-// Location: Desktop/projects/Event_Tracker/src/GeneralEvent.java
-
 import java.time.LocalDate;
 
-public class GeneralEvent extends Event {
-    private String eventType;
+public class GeneralEvent extends Event { // Inheritance: GeneralEvent inherits from Event
+    private String eventType; // Encapsulation: private field for event type
 
-    public GeneralEvent(String name, LocalDate date, String eventType) {
-        super(name, date);
-        this.eventType = eventType;
+    public GeneralEvent(String name, LocalDate date, String eventType) { // Constructor
+        super(name, date); // Call parent constructor
+        this.eventType=eventType;
     }
 
-    public String getEventType() {
-        return eventType;
-    }
+    public String getEventType() { return eventType; } // Getter for event type
 
     @Override
-    public String getReminderMessage() {
-        return "Remember the " + eventType + " for " + getName() + " on " + getDate() + ".";
+    public String getReminderMessage() { // Polymorphism: Overriding method for reminder message
+        return "Remember the "+eventType+" for "+getName()+" on "+getDate()+".";
     }
 }

@@ -6,74 +6,83 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class EventTrackerAppGUI extends JFrame {
-    private EventManager eventManager; // Instance of EventManager
-    private JTextField nameField, dateField, typeField, ageField; // Input fields
-    private JTextArea reminderArea; // Area to display reminders
-    private JComboBox<String> eventTypeBox; // Dropdown for event types
+    private EventManager eventManager;
+    private JTextField nameField, dateField, typeField, ageField, selectedDateField;
+    private JTextArea reminderArea;
+    private JComboBox<String> eventTypeBox;
 
     public EventTrackerAppGUI() {
-        eventManager = new EventManager(); // Create EventManager instance
+        eventManager = new EventManager();  // Initialize the event manager
 
-        // Set up main frame
+        // Set up the main frame
         setTitle("Event Tracker");
-        setSize(400, 400);
+        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Input panel for event details
+        // Panel for user input
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(6, 2));
+        inputPanel.setLayout(new GridLayout(8, 2));
 
-        // Event type selection
+        // Event type input with JComboBox (dropdown)
         inputPanel.add(new JLabel("Event Type:"));
         eventTypeBox = new JComboBox<>(new String[]{"Birthday", "Anniversary", "General"});
         inputPanel.add(eventTypeBox);
 
-        // Name field
         inputPanel.add(new JLabel("Event Name:"));
         nameField = new JTextField();
         inputPanel.add(nameField);
 
-        // Date field
         inputPanel.add(new JLabel("Event Date (YYYY-MM-DD):"));
         dateField = new JTextField();
         inputPanel.add(dateField);
 
-        // Optional fields based on event type
-        inputPanel.add(new JLabel("Age (if Birthday):"));
+        // Age field for optional input
+        inputPanel.add(new JLabel("Age (optional for Birthday):"));
         ageField = new JTextField();
         inputPanel.add(ageField);
 
+        // Type/Celebration type input field
         inputPanel.add(new JLabel("Celebration/Type:"));
         typeField = new JTextField();
         inputPanel.add(typeField);
 
-        // Add event button
+        // Buttons for adding events and displaying reminders
         JButton addButton = new JButton("Add Event");
-        addButton.addActionListener(new AddEventButtonListener());
+        addButton.addActionListener(new AddEventButtonListener());  // Encapsulation: Adding an event listener through a private inner class
         inputPanel.add(addButton);
 
-        // Display reminders button
-        JButton displayButton = new JButton("Display Today's Reminders");
-        displayButton.addActionListener(new DisplayRemindersButtonListener());
-        inputPanel.add(displayButton);
+        JButton displayTodayButton = new JButton("Display Today's Reminders");
+        displayTodayButton.addActionListener(new DisplayRemindersButtonListener()); // Encapsulation: private inner class as listener
+        inputPanel.add(displayTodayButton);
 
-        // Reminder display area
+        // Input field for selecting a specific date
+        inputPanel.add(new JLabel("Select Date for Reminders (YYYY-MM-DD):"));
+        selectedDateField = new JTextField();
+        inputPanel.add(selectedDateField);
+
+        // Button for displaying reminders on a selected date
+        JButton displaySelectedDateButton = new JButton("Display Reminders on Selected Date");
+        displaySelectedDateButton.addActionListener(new DisplaySelectedDateRemindersButtonListener()); // Encapsulation: inner class listener
+        inputPanel.add(displaySelectedDateButton);
+
+        // Display area for reminders
         reminderArea = new JTextArea(10, 30);
         reminderArea.setEditable(false);
 
-        // Add components to main frame
         add(inputPanel, BorderLayout.NORTH);
         add(new JScrollPane(reminderArea), BorderLayout.CENTER);
 
-        loadReminders(); // Load reminders on startup
+        loadReminders(); // Load today’s reminders when GUI opens
     }
 
     private void loadReminders() {
+        // Display today's reminders on application start
         reminderArea.setText("Today's Reminders:\n");
-        eventManager.displayReminders(reminderArea); // Display reminders from loaded events
+        eventManager.displayReminders(reminderArea);
     }
 
+    // Listener class for adding events
     private class AddEventButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -82,9 +91,9 @@ public class EventTrackerAppGUI extends JFrame {
                 LocalDate date = LocalDate.parse(dateField.getText());
                 String selectedType = (String) eventTypeBox.getSelectedItem();
 
-                // Create event based on selected type
+                // Handle event type selection and creation with polymorphism
                 if (selectedType.equals("Birthday")) {
-                    int age = Integer.parseInt(ageField.getText());
+                    int age = ageField.getText().isEmpty() ? -1 : Integer.parseInt(ageField.getText()); // Optional age input
                     eventManager.addEvent(new Birthday(name, date, age));
                 } else if (selectedType.equals("Anniversary")) {
                     String celebrationType = typeField.getText();
@@ -103,8 +112,10 @@ public class EventTrackerAppGUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Event added successfully!");
 
             } catch (DateTimeParseException ex) {
+                // Handle incorrect date format
                 JOptionPane.showMessageDialog(null, "Please enter a valid date (YYYY-MM-DD).");
             } catch (NumberFormatException ex) {
+                // Handle incorrect number format for age
                 JOptionPane.showMessageDialog(null, "Please enter a valid age (only numbers).");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "An error occurred: " + ex.getMessage());
@@ -112,16 +123,32 @@ public class EventTrackerAppGUI extends JFrame {
         }
     }
 
+    // Listener class for displaying today's reminders
     private class DisplayRemindersButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             reminderArea.setText("Today's Reminders:\n");
-            eventManager.displayReminders(reminderArea); // Refresh reminders
+            eventManager.displayReminders(reminderArea);
+        }
+    }
+
+    // Listener class for displaying reminders for a selected date
+    private class DisplaySelectedDateRemindersButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                LocalDate selectedDate = LocalDate.parse(selectedDateField.getText());
+                reminderArea.setText("Reminders for " + selectedDate + ":\n");
+                eventManager.displayRemindersForDate(reminderArea, selectedDate);
+            } catch (DateTimeParseException ex) {
+                // Handle incorrect date format for selected date
+                JOptionPane.showMessageDialog(null, "Please enter a valid date (YYYY-MM-DD).");
+            }
         }
     }
 
     public static void main(String[] args) {
         EventTrackerAppGUI app = new EventTrackerAppGUI();
-        app.setVisible(true);
+        app.setVisible(true); // Launch the GUI
     }
 }
